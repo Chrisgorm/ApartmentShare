@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import "StackMob.h"
 #import "User.h"
+#import "UserVoice.h"
 
 @implementation ADVLoginViewController
 
@@ -159,6 +160,14 @@
         UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [errorAlertView show];
     }];
+}
+
+- (IBAction)showHelp:(id)sender {
+    UVConfig *config = [UVConfig configWithSite:@"YOUR_USERVOICE_URL"
+                                         andKey:@"YOUR_KEY"
+                                      andSecret:@"YOUR_SECRET"];
+    
+    [UserVoice presentUserVoiceInterfaceForParentViewController:self andConfig:config];
 }
 
 @end
