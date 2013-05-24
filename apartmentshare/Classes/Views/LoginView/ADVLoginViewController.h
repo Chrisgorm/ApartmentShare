@@ -28,5 +28,6 @@
 
 -(IBAction)signUpPressed:(id)sender;
 -(IBAction)logInPressed:(id)sender;
+- (IBAction)showHelp:(id)sender;
 
 @end
