@@ -27,9 +27,10 @@
     // Configure the view for the selected state
 }
 
--(void)layoutSubviews{
+-(void)layoutSubviews
+{
     
-    if(!self.laidOut){
+    if (!self.laidOut) {
         
         CAGradientLayer *l = [CAGradientLayer layer];
         l.frame = self.shadowView.bounds;

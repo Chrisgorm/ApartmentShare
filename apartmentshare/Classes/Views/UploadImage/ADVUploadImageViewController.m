@@ -10,8 +10,8 @@
 #import "StackMob.h"
 #import "ADVTheme.h"
 #import "DetailsCell.h"
-#import "AppDelegate.h"
 #import "MBProgressHUD.h"
+#import "Apartment.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -27,12 +27,6 @@ typedef enum {
 @end
 
 @implementation ADVUploadImageViewController
-
-
-- (AppDelegate *)appDelegate {
-    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-}
-
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,7 +45,7 @@ typedef enum {
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Upload Apartment";
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
+    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(uploadTapped:)];
     
@@ -111,7 +105,8 @@ typedef enum {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     
     UIImageView *imgBkg = [[UIImageView alloc] initWithImage:[[ADVThemeManager sharedTheme] tableSectionHeaderBackground]];
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 3, 300, 22)];
@@ -124,11 +119,13 @@ typedef enum {
     return imgBkg;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return 4;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     DetailsCell *cell = (DetailsCell*)[tableView dequeueReusableCellWithIdentifier:@"DetailsCell"];
@@ -136,45 +133,42 @@ typedef enum {
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if(indexPath.row == LocationDetail){
-    
-        cell.detailLabel.text = @"Location";
-        
-        [cell addSubview:self.locationTextField];
+    switch (indexPath.row) {
+        case LocationDetail:
+            cell.detailLabel.text = @"Location";
+            [cell addSubview:self.locationTextField];
+            break;
+        case PriceDetail:
+            cell.detailLabel.text = @"Price/month";
+            [cell addSubview:self.priceTextField];
+            break;
+        case RoomDetail:
+            cell.detailLabel.text = @"Rooms";
+            [cell addSubview:self.roomsSlider];
+            [cell addSubview:self.roomsLabel];
+            break;
+        case TypeDetail:
+            cell.detailLabel.text = @"Type";
+            [cell addSubview:self.apartmentTypeControl];
+            break;
+        default:
+            break;
     }
-    else if(indexPath.row == PriceDetail){
-    
-        cell.detailLabel.text = @"Price/month";
-        
-        [cell addSubview:self.priceTextField];
-    }
-    else if (indexPath.row == RoomDetail){
-        
-        cell.detailLabel.text = @"Rooms";
-        
-        [cell addSubview:self.roomsSlider];
-        [cell addSubview:self.roomsLabel];
-    }
-    else if (indexPath.row == TypeDetail){
-        
-        cell.detailLabel.text = @"Type";
-        
-        [cell addSubview:self.apartmentTypeControl];
-    }
-    
     
     return cell;
 }
 
 #pragma mark - Table view delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     return 32.0f;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
    
-    if(indexPath.row == TypeDetail){
+    if(indexPath.row == TypeDetail) {
         
         return 65;
     }
@@ -184,11 +178,12 @@ typedef enum {
 
 
 #pragma mark IB Actions
--(IBAction)numberOfRoomsChanged:(id)sender{
+- (IBAction)numberOfRoomsChanged:(id)sender
+{
     
     [self.roomsLabel setText:[NSString stringWithFormat:@"%.0f", self.roomsSlider.value]];
 }
--(IBAction)selectPicturePressed:(id)sender
+- (IBAction)selectPicturePressed:(id)sender
 {
 
     UIImagePickerController *imgPicker = [[UIImagePickerController alloc] init];
@@ -200,7 +195,7 @@ typedef enum {
 
 }
 
--(IBAction)uploadTapped:(id)sender
+- (IBAction)uploadTapped:(id)sender
 {
     [self.locationTextField resignFirstResponder];
 
@@ -216,9 +211,9 @@ typedef enum {
     
 }
 
--(void)uploadDataToServer{
-    
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Apartment" inManagedObjectContext:self.managedObjectContext];
+- (void)uploadDataToServer
+{
+    Apartment *newApartment = (Apartment *)[NSEntityDescription insertNewObjectForEntityForName:@"Apartment" inManagedObjectContext:self.managedObjectContext];
     
     NSData *imageData = UIImageJPEGRepresentation(self.uploadImageView.image, 0.4);
     
@@ -230,12 +225,12 @@ typedef enum {
     NSNumber* price = [NSNumber numberWithFloat:[self.priceTextField.text floatValue]];
     NSNumber* roomCount = [NSNumber numberWithFloat:self.roomsSlider.value];
     
-    [newManagedObject setValue:picData forKey:@"photo"];
-    [newManagedObject setValue:self.locationTextField.text forKey:@"location"];
-    [newManagedObject setValue:roomCount forKey:@"roomCount"];
-    [newManagedObject setValue:price forKey:@"price"];
-    [newManagedObject setValue:apartmentType forKey:@"apartmentType"];
-    [newManagedObject setValue:[newManagedObject assignObjectId] forKey:[newManagedObject primaryKeyField]];
+    [newApartment setPhoto:picData];
+    [newApartment setLocation:self.locationTextField.text];
+    [newApartment setRoomCount:roomCount];
+    [newApartment setPrice:price];
+    [newApartment setApartmentType:apartmentType];
+    [newApartment assignObjectId];
     
     [self.managedObjectContext saveOnSuccess:^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -250,28 +245,20 @@ typedef enum {
     
 }
 
--(void)dataUploadDone{
-    
-}
-
-
 #pragma mark UIImagePicker delegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)img editingInfo:(NSDictionary *)editInfo 
 {
-    
     [picker dismissModalViewControllerAnimated:YES];
     
     //Place the image in the imageview
-    self.uploadImageView.image = img;
-
-    
+    self.uploadImageView.image = img;    
 }
 
 #pragma mark Error View
 
 
--(void)showErrorView:(NSString *)errorMsg
+- (void)showErrorView:(NSString *)errorMsg
 {
     UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMsg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     [errorAlertView show];
@@ -292,55 +279,44 @@ typedef enum {
 
 -(void)keyboardWillShow {
     // Animate the current view out of the way
-    if (self.view.frame.origin.y >= 0)
-    {
+    if (self.view.frame.origin.y >= 0) {
         [self setViewMovedUp:YES];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
+    } else if (self.view.frame.origin.y < 0) {
         [self setViewMovedUp:NO];
     }
 }
 
--(void)keyboardWillHide {
-    if (self.view.frame.origin.y >= 0)
-    {
+- (void)keyboardWillHide {
+    if (self.view.frame.origin.y >= 0) {
         [self setViewMovedUp:YES];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
+    } else if (self.view.frame.origin.y < 0) {
         [self setViewMovedUp:NO];
     }
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)sender
+- (void)textFieldDidBeginEditing:(UITextField *)sender
 {
-    if ([sender isEqual:self.priceTextField] || [sender isEqual:self.locationTextField])
-    {
+    if ([sender isEqual:self.priceTextField] || [sender isEqual:self.locationTextField]) {
         //move the main view, so that the keyboard does not hide it.
-        if  (self.view.frame.origin.y >= 0)
-        {
+        if  (self.view.frame.origin.y >= 0) {
             [self setViewMovedUp:YES];
         }
     }
 }
 
 //method to move the view up/down whenever the keyboard is shown/dismissed
--(void)setViewMovedUp:(BOOL)movedUp
+- (void)setViewMovedUp:(BOOL)movedUp
 {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3]; // if you want to slide up the view
     
     CGRect rect = self.view.frame;
-    if (movedUp)
-    {
+    if (movedUp) {
         // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
         // 2. increase the size of the view so that the area behind the keyboard is covered up.
         rect.origin.y -= kOFFSET_FOR_KEYBOARD;
         rect.size.height += kOFFSET_FOR_KEYBOARD;
-    }
-    else
-    {
+    } else {
         // revert back to the normal state.
         rect.origin.y += kOFFSET_FOR_KEYBOARD;
         rect.size.height -= kOFFSET_FOR_KEYBOARD;

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class SMClient;
-
 @interface ADVLoginViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -24,10 +22,8 @@
 
 @property (nonatomic, weak) IBOutlet UIButton *signupButton;
 
-@property (strong, nonatomic) SMClient *client;
-
--(IBAction)signUpPressed:(id)sender;
--(IBAction)logInPressed:(id)sender;
+- (IBAction)signUpPressed:(id)sender;
+- (IBAction)logInPressed:(id)sender;
 - (IBAction)showHelp:(id)sender;
 
 @end

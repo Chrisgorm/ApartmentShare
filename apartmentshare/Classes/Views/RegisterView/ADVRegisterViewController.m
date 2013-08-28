@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "ADVTheme.h"
 #import "User.h"
+#import "StackMob.h"
 
 @interface ADVRegisterViewController ()
 
@@ -20,11 +21,6 @@
 
 @synthesize userRegisterTextField = _userRegisterTextField, passwordRegisterTextField = _passwordRegisterTextField;
 @synthesize managedObjectContext = _managedObjectContext;
-
-- (AppDelegate *)appDelegate {
-    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -68,7 +64,7 @@
     [self.passwordRegisterTextField setSecureTextEntry:YES];
     [self.passwordRegisterTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
+    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
     
     self.userRegisterTextField.delegate = self;
     self.passwordRegisterTextField.delegate = self;
@@ -83,22 +79,24 @@
     self.passwordRegisterTextField = nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     
     return 2;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     UITableViewCell* cell = nil;
     
-    if(indexPath.row == 0){
+    if (indexPath.row == 0) {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
         
         [cell addSubview:self.userRegisterTextField];
         
-    }else {
+    } else {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
         
@@ -117,7 +115,7 @@
 #pragma mark IB Actions
 
 ////Sign Up Button pressed
--(IBAction)signUpUserPressed:(id)sender
+- (IBAction)signUpUserPressed:(id)sender
 {
     User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
     

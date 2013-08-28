@@ -11,8 +11,8 @@
 #import "ADVUploadImageViewController.h"
 #import "ADVLoginViewController.h"
 #import "ADVDetailViewController.h"
+#import "StackMob.h"
 #import "ApartmentCell.h"
-#import "AppDelegate.h"
 #import "Apartment.h"
 #import "FTWCache.h"
 #import "ADVTheme.h"
@@ -34,11 +34,6 @@
 @end
 
 @implementation ADVApartmentListViewController
-
-
-- (AppDelegate *)appDelegate {
-    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -73,14 +68,13 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadPressed:)];
     
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
+    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
 
     [self.apartmentTableView setDelegate:self];
     [self.apartmentTableView setDataSource:self];
     
     self.apartmentImages = [NSMutableDictionary dictionary];
     
-    self.client = [SMClient defaultClient];
 }
 
 - (void)viewDidUnload
@@ -108,13 +102,15 @@
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     
     return [self.apartments count];
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     ApartmentCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ApartmentCell" forIndexPath:indexPath];
     
@@ -146,7 +142,6 @@
         [self.apartmentImages setObject:image forKey:indexPath];
         
     } else {
-        //cell.apartmentImageView.image = [UIImage imageNamed:@"icn_default"];
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
         dispatch_async(queue, ^{
             NSData *data = [NSData dataWithContentsOfURL:imageURL];
@@ -166,11 +161,13 @@
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 260;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     [self performSegueWithIdentifier:@"detail" sender:self];
 }
@@ -178,7 +175,7 @@
 #pragma mark Receive Wall Objects
 
 
--(void)getAllApartments
+- (void)getAllApartments
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
@@ -200,9 +197,9 @@
 }
 
 #pragma mark IB Actions
--(IBAction)uploadPressed:(id)sender
+- (IBAction)uploadPressed:(id)sender
 {
-    if([[[self appDelegate] client] isLoggedIn]){
+    if([[SMClient defaultClient] isLoggedIn]){
         
         [self performSegueWithIdentifier:@"upload" sender:self];
     }
@@ -215,13 +212,13 @@
 }
 
 
--(IBAction)loginLogoutPressed:(id)sender
+- (IBAction)loginLogoutPressed:(id)sender
 {
-    if([[[self appDelegate] client] isLoggedIn]){
+    if([[SMClient defaultClient] isLoggedIn]){
     
-        [self.client logoutOnSuccess:^(NSDictionary *result) {
+        [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result) {
             NSLog(@"Success, you are logged out");
-            if ([[[self appDelegate] client] isLoggedOut]) {
+            if ([[SMClient defaultClient] isLoggedOut]) {
                 NSLog(@"Logged Out");
             }
             
@@ -239,14 +236,16 @@
     
 }
 
--(NSString*)getLogText{
+- (NSString*)getLogText
+{
     
-    NSString* logText = [[[self appDelegate] client] isLoggedIn] ? @"Log Out" : @"Log In";
+    NSString* logText = [[SMClient defaultClient] isLoggedIn] ? @"Log Out" : @"Log In";
     
     return logText;
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     
     if([segue.identifier isEqualToString:@"detail"]){
  
@@ -267,7 +266,8 @@
 
 #pragma mark Error Alert
 
--(void)showErrorView:(NSString *)errorMsg{
+- (void)showErrorView:(NSString *)errorMsg
+{
     
     UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMsg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     [errorAlertView show];

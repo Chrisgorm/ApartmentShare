@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "StackMob.h"
+#import <CoreData/CoreData.h>
 
 @interface ADVApartmentListViewController : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -18,9 +18,7 @@
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
-@property (strong, nonatomic) SMClient *client;
-
--(IBAction)uploadPressed:(id)sender;
--(IBAction)loginLogoutPressed:(id)sender;
+- (IBAction)uploadPressed:(id)sender;
+- (IBAction)loginLogoutPressed:(id)sender;
 
 @end

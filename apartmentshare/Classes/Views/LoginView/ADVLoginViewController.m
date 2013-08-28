@@ -19,12 +19,6 @@
 
 @synthesize userTextField = _userTextField, passwordTextField = _passwordTextField;
 @synthesize managedObjectContext = _managedObjectContext;
-@synthesize client = _client;
-
-- (AppDelegate *)appDelegate {
-    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
-}
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -80,15 +74,14 @@
     [self.passwordTextField setSecureTextEntry:YES];
     [self.passwordTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     
-    self.managedObjectContext = [[self.appDelegate coreDataStore] contextForCurrentThread];
-    
-    self.client = [SMClient defaultClient];
+    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
     
     self.userTextField.delegate = self;
     self.passwordTextField.delegate = self;
 }
 
--(void)viewDidAppear:(BOOL)animated{
+-(void)viewDidAppear:(BOOL)animated
+{
     
     [super viewDidAppear:animated];
     
@@ -104,12 +97,14 @@
     self.passwordTextField = nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     
     return 2;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
 
     UITableViewCell* cell = nil;
     
@@ -138,17 +133,17 @@
 #pragma mark IB Actions
 
 //Show the hidden register view
--(IBAction)signUpPressed:(id)sender
+- (IBAction)signUpPressed:(id)sender
 {
     [self performSegueWithIdentifier:@"signup" sender:self];
 }
 
 //Login button pressed
--(IBAction)logInPressed:(id)sender
+- (IBAction)logInPressed:(id)sender
 {
-    [self.client loginWithUsername:self.userTextField.text password:self.passwordTextField.text onSuccess:^(NSDictionary *results) {
+    [[SMClient defaultClient] loginWithUsername:self.userTextField.text password:self.passwordTextField.text onSuccess:^(NSDictionary *results) {
         
-        if ([[[self appDelegate] client] isLoggedIn]) {
+        if ([[SMClient defaultClient] isLoggedIn]) {
             NSLog(@"Logged in");
         }
         
@@ -162,7 +157,8 @@
     }];
 }
 
-- (IBAction)showHelp:(id)sender {
+- (IBAction)showHelp:(id)sender
+{
     UVConfig *config = [UVConfig configWithSite:@"YOUR_USERVOICE_URL"
                                          andKey:@"YOUR_KEY"
                                       andSecret:@"YOUR_SECRET"];

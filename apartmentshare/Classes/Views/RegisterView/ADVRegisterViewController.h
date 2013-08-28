@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "StackMob.h"
 
 @interface ADVRegisterViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -21,6 +20,6 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *signupButton;
 
--(IBAction)signUpUserPressed:(id)sender;
+- (IBAction)signUpUserPressed:(id)sender;
 
 @end

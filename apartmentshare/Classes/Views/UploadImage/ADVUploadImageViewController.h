@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
-
 @interface ADVUploadImageViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -34,7 +32,7 @@
 
 @property (nonatomic, strong) NSError* uploadError;
 
--(IBAction)selectPicturePressed:(id)sender;
+- (IBAction)selectPicturePressed:(id)sender;
 
 
 
