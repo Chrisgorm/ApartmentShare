@@ -19,9 +19,7 @@
 #import "NSString+MD5.h"
 #import "MBProgressHUD.h"
 
-@interface ADVApartmentListViewController () {
-
-}
+@interface ADVApartmentListViewController ()
 
 @property (nonatomic, retain) NSArray *apartments;
 @property (nonatomic, retain) NSMutableDictionary *apartmentImages;

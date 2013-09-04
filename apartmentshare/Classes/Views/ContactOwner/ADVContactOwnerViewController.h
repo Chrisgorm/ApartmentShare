@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADVContactOwnerViewController : UIViewController
+@interface ADVContactOwnerViewController : UIViewController <UIAlertViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextView *message;
+
+@property (nonatomic, strong) NSString *apartmentOwner;
+
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+
+
+- (IBAction)cancelButton:(id)sender;
+- (IBAction)sendButton:(id)sender;
 
 @end
