@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong) UITextField *userRegisterTextField;
 
+@property (nonatomic, strong) UITextField *emailRegisterTextField;
+
 @property (nonatomic, strong) UITextField *passwordRegisterTextField;
 
 @property (nonatomic, strong) UITableView *loginTableView;

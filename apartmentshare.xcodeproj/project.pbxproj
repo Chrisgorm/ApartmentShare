@@ -70,6 +70,7 @@
 		7F2EEF6016BC7BC80001A98B /* sliderThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2EEF2216BC7BC80001A98B /* sliderThumb@2x.png */; };
 		DE1D166F16E130160045EDB5 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1D166E16E130160045EDB5 /* CoreLocation.framework */; };
 		DE1D167516E54DAD0045EDB5 /* Apartment.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1D167416E54DAD0045EDB5 /* Apartment.m */; };
+		DE246AC317D679420023C231 /* ADVContactOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE246AC217D679420023C231 /* ADVContactOwnerViewController.m */; };
 		DE288AC217CEC05800CFB8A3 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = DE288A8A17CEC05800CFB8A3 /* CHANGELOG.md */; };
 		DE288AC317CEC05800CFB8A3 /* libstackmob-v2.1.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE288AC117CEC05800CFB8A3 /* libstackmob-v2.1.1.a */; };
 		DEC2532F174FE6F20023BEDA /* libUserVoice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEC25313174FE6F20023BEDA /* libUserVoice.a */; };
@@ -181,6 +182,8 @@
 		DE1D166E16E130160045EDB5 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DE1D167316E54DAD0045EDB5 /* Apartment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Apartment.h; sourceTree = "<group>"; };
 		DE1D167416E54DAD0045EDB5 /* Apartment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Apartment.m; sourceTree = "<group>"; };
+		DE246AC117D679420023C231 /* ADVContactOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ADVContactOwnerViewController.h; path = ContactOwner/ADVContactOwnerViewController.h; sourceTree = "<group>"; };
+		DE246AC217D679420023C231 /* ADVContactOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ADVContactOwnerViewController.m; path = ContactOwner/ADVContactOwnerViewController.m; sourceTree = "<group>"; };
 		DE288A8A17CEC05800CFB8A3 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
 		DE288A8C17CEC05800CFB8A3 /* AFHTTPClient+StackMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPClient+StackMob.h"; sourceTree = "<group>"; };
 		DE288A8D17CEC05800CFB8A3 /* AFHTTPRequestOperation+RemoveContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestOperation+RemoveContentType.h"; sourceTree = "<group>"; };
@@ -413,6 +416,7 @@
 		7F2EEEE216BC7BC80001A98B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DE246AC017D6781C0023C231 /* ContactOwnerView */,
 				7F2EEEE316BC7BC80001A98B /* AppartmentList */,
 				7F2EEEE616BC7BC80001A98B /* DetailView */,
 				7F2EEEE916BC7BC80001A98B /* LoginView */,
@@ -517,6 +521,15 @@
 				7F2EEF2216BC7BC80001A98B /* sliderThumb@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		DE246AC017D6781C0023C231 /* ContactOwnerView */ = {
+			isa = PBXGroup;
+			children = (
+				DE246AC117D679420023C231 /* ADVContactOwnerViewController.h */,
+				DE246AC217D679420023C231 /* ADVContactOwnerViewController.m */,
+			);
+			name = ContactOwnerView;
 			sourceTree = "<group>";
 		};
 		DE288A8917CEC05800CFB8A3 /* StackMob-v2.1.1 */ = {
@@ -843,6 +856,7 @@
 				7F2EEF3316BC7BC80001A98B /* ADVUploadImageViewController.m in Sources */,
 				7F0CA21516BD3D3200B16ED5 /* MBProgressHUD.m in Sources */,
 				DE1D167516E54DAD0045EDB5 /* Apartment.m in Sources */,
+				DE246AC317D679420023C231 /* ADVContactOwnerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

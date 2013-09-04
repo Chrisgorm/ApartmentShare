@@ -12,10 +12,6 @@
 #import "User.h"
 #import "StackMob.h"
 
-@interface ADVRegisterViewController ()
-
-@end
-
 
 @implementation ADVRegisterViewController
 
@@ -37,7 +33,7 @@
     
     self.title = @"Login";
     
-    self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(16, 50, 294, 110) style:UITableViewStyleGrouped];
+    self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(16, 50, 294, 160) style:UITableViewStyleGrouped];
     
     [self.loginTableView setScrollEnabled:NO];
     [self.loginTableView setBackgroundView:nil];
@@ -57,6 +53,10 @@
     self.userRegisterTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, 260, 50)];
     [self.userRegisterTextField setPlaceholder:@"Username"];
     [self.userRegisterTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    
+    self.emailRegisterTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, 260, 50)];
+    [self.emailRegisterTextField setPlaceholder:@"Email"];
+    [self.emailRegisterTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     
     
     self.passwordRegisterTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, 10, 260, 50)];
@@ -82,7 +82,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,17 +90,20 @@
     
     UITableViewCell* cell = nil;
     
-    if (indexPath.row == 0) {
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
-        
-        [cell addSubview:self.userRegisterTextField];
-        
-    } else {
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
-        
-        [cell addSubview:self.passwordRegisterTextField];
+    switch (indexPath.row) {
+        case 0:
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
+            [cell addSubview:self.userRegisterTextField];
+            break;
+        case 1:
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EmailCell"];
+            [cell addSubview:self.emailRegisterTextField];
+            break;
+        case 2:
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
+            [cell addSubview:self.passwordRegisterTextField];
+        default:
+            break;
     }
     
     return cell;
@@ -119,7 +122,8 @@
 {
     User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
     
-    [newUser setValue:self.userRegisterTextField.text forKey:[newUser primaryKeyField]];
+    [newUser setUsername:self.userRegisterTextField.text];
+    [newUser setEmail:self.emailRegisterTextField.text];
     [newUser setPassword:self.passwordRegisterTextField.text];
     
     [self.managedObjectContext saveOnSuccess:^{

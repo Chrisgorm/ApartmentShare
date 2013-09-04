@@ -11,6 +11,7 @@
 @implementation User
 
 @dynamic username;
+@dynamic email;
 
 - (id)initIntoManagedObjectContext:(NSManagedObjectContext *)context {
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:context];

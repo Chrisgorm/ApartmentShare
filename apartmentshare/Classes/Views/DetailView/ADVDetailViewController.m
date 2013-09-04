@@ -9,21 +9,9 @@
 #import "ADVDetailViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ADVTheme.h"
-
-@interface ADVDetailViewController ()
-
-@end
+#import "ADVContactOwnerViewController.h"
 
 @implementation ADVDetailViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -87,10 +75,10 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    ADVContactOwnerViewController *contactOwnerViewController = [segue destinationViewController];
+    NSString *apartmentOwner = [self.apartment valueForKey:@"sm_owner"];
+    contactOwnerViewController.apartmentOwner = [[apartmentOwner componentsSeparatedByString:@"/"] lastObject];
 }
-
 @end

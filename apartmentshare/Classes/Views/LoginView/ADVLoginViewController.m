@@ -18,17 +18,6 @@
 @implementation ADVLoginViewController
 
 @synthesize userTextField = _userTextField, passwordTextField = _passwordTextField;
-@synthesize managedObjectContext = _managedObjectContext;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = @"Log In";
-    }
-    return self;
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -73,20 +62,9 @@
     [self.passwordTextField setPlaceholder:@"Password"];
     [self.passwordTextField setSecureTextEntry:YES];
     [self.passwordTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-    
-    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
-    
+        
     self.userTextField.delegate = self;
     self.passwordTextField.delegate = self;
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    
-    [super viewDidAppear:animated];
-    
-    self.title = @"Log In";
-    
 }
 
 - (void)viewDidUnload
@@ -99,7 +77,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
     return 2;
 }
 
@@ -143,9 +120,10 @@
 {
     [[SMClient defaultClient] loginWithUsername:self.userTextField.text password:self.passwordTextField.text onSuccess:^(NSDictionary *results) {
         
-        if ([[SMClient defaultClient] isLoggedIn]) {
-            NSLog(@"Logged in");
-        }
+        NSLog(@"Logged in");
+        
+        // Save email for contacting owner
+        [[NSUserDefaults standardUserDefaults] setObject:[results objectForKey:@"email"] forKey:@"ContactOwnerEmailKey"];
         
         [self performSegueWithIdentifier:@"list" sender:self];
         

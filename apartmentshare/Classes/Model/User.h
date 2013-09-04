@@ -13,6 +13,7 @@
 @interface User : SMUserManagedObject
 
 @property (nonatomic, retain) NSString * username;
+@property (nonatomic, retain) NSString * email;
 
 - (id)initIntoManagedObjectContext:(NSManagedObjectContext *)context;
 

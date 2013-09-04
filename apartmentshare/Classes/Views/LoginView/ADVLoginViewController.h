@@ -10,8 +10,6 @@
 
 @interface ADVLoginViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 @property (nonatomic, strong) IBOutlet UITextField *userTextField;
 
 @property (nonatomic, strong) IBOutlet UITextField *passwordTextField;
