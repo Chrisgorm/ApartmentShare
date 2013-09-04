@@ -204,6 +204,8 @@ typedef enum {
 {
     Apartment *newApartment = (Apartment *)[NSEntityDescription insertNewObjectForEntityForName:@"Apartment" inManagedObjectContext:self.managedObjectContext];
     
+    [newApartment assignObjectId];
+    
     NSData *imageData = UIImageJPEGRepresentation(self.uploadImageView.image, 0.4);
     
     NSString *picData = [SMBinaryDataConversion stringForBinaryData:imageData name:@"apartment.jpg" contentType:@"image/jpg"];
@@ -219,7 +221,6 @@ typedef enum {
     [newApartment setRoomCount:roomCount];
     [newApartment setPrice:price];
     [newApartment setApartmentType:apartmentType];
-    [newApartment assignObjectId];
     
     [self.managedObjectContext saveOnSuccess:^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];

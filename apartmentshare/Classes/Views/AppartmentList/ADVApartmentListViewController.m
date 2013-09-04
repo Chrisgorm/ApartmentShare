@@ -192,9 +192,6 @@
     
         [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result) {
             NSLog(@"Success, you are logged out");
-            if ([[SMClient defaultClient] isLoggedOut]) {
-                NSLog(@"Logged Out");
-            }
             
             self.navigationItem.leftBarButtonItem.title = [self getLogText];
             [self.navigationController popViewControllerAnimated:YES];
