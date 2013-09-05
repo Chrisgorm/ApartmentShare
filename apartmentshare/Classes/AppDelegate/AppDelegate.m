@@ -10,7 +10,7 @@
 #import "ADVTheme.h"
 #import "StackMob.h"
 
-#define PUBLIC_KEY @"f9522b1c-fc85-41f6-a6e0-82243f27f5a5"
+#define PUBLIC_KEY @"YOUR_PUBLIC_KEY"
 
 @implementation AppDelegate
 
