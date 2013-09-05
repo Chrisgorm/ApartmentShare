@@ -14,7 +14,8 @@
 
 @property (nonatomic, weak) IBOutlet UITableView *apartmentTableView;
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+// STACKMOB
+// @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 

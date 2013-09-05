@@ -19,6 +19,8 @@
 
     [ADVThemeManager customizeAppAppearance];
     
+    // StackMob Init Code
+    /*
     SM_CACHE_ENABLED = YES;
     
     self.client = [[SMClient alloc] initWithAPIVersion:@"0" publicKey:PUBLIC_KEY];
@@ -59,6 +61,7 @@
     [self.coreDataStore setSyncCallbackForFailedDeletes:^(NSArray *objects) {
         NSLog(@"Sync Failure on Deletes");
     }];
+    */
     
     return YES;
 }

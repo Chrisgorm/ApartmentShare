@@ -34,7 +34,8 @@ typedef enum {
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Upload Apartment";
-    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
+    // STACKMOB
+    // self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(uploadTapped:)];
     
@@ -202,6 +203,8 @@ typedef enum {
 
 - (void)uploadDataToServer
 {
+    // STACKMOB
+    /*
     Apartment *newApartment = (Apartment *)[NSEntityDescription insertNewObjectForEntityForName:@"Apartment" inManagedObjectContext:self.managedObjectContext];
     
     [newApartment assignObjectId];
@@ -231,6 +234,7 @@ typedef enum {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSLog(@"Error: %@", [error localizedDescription]);
     }];
+     */
     
 }
 

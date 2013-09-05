@@ -11,9 +11,14 @@
 #import "ADVApartmentListViewController.h"
 #import "ADVTheme.h"
 #import "AppDelegate.h"
+#import "UserVoice.h"
+
+// STACKMOB
+/*
 #import "StackMob.h"
 #import "User.h"
-#import "UserVoice.h"
+ */
+
 
 @implementation ADVLoginViewController
 
@@ -118,6 +123,8 @@
 //Login button pressed
 - (IBAction)logInPressed:(id)sender
 {
+    // STACKMOB
+    /*
     [[SMClient defaultClient] loginWithUsername:self.userTextField.text password:self.passwordTextField.text onSuccess:^(NSDictionary *results) {
         
         NSLog(@"Logged in");
@@ -131,15 +138,19 @@
         
         NSLog(@"Error: %@", [error localizedDescription]);
     }];
+     */
 }
 
 - (IBAction)showHelp:(id)sender
 {
+    // STACKMOB
+    /*
     UVConfig *config = [UVConfig configWithSite:@"YOUR_USERVOICE_URL"
                                          andKey:@"YOUR_KEY"
                                       andSecret:@"YOUR_SECRET"];
     
     [UserVoice presentUserVoiceInterfaceForParentViewController:self andConfig:config];
+     */
 }
 
 @end

@@ -9,14 +9,16 @@
 #import "ADVRegisterViewController.h"
 #import "AppDelegate.h"
 #import "ADVTheme.h"
+// STACKMOB
+/*
 #import "User.h"
 #import "StackMob.h"
+ */
 
 
 @implementation ADVRegisterViewController
 
 @synthesize userRegisterTextField = _userRegisterTextField, passwordRegisterTextField = _passwordRegisterTextField;
-@synthesize managedObjectContext = _managedObjectContext;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -64,7 +66,8 @@
     [self.passwordRegisterTextField setSecureTextEntry:YES];
     [self.passwordRegisterTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     
-    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
+    // STACKMOB
+    // self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
     
     self.userRegisterTextField.delegate = self;
     self.passwordRegisterTextField.delegate = self;
@@ -120,6 +123,8 @@
 ////Sign Up Button pressed
 - (IBAction)signUpUserPressed:(id)sender
 {
+    // STACKMOB
+    /*
     User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
     
     [newUser setUsername:self.userRegisterTextField.text];
@@ -132,6 +137,7 @@
         
         NSLog(@"Error: %@", [error localizedDescription]);
     }];
+     */
 }
 
 @end

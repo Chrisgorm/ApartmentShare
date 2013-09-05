@@ -11,13 +11,15 @@
 #import "ADVUploadImageViewController.h"
 #import "ADVLoginViewController.h"
 #import "ADVDetailViewController.h"
-#import "StackMob.h"
 #import "ApartmentCell.h"
 #import "Apartment.h"
 #import "FTWCache.h"
 #import "ADVTheme.h"
 #import "NSString+MD5.h"
 #import "MBProgressHUD.h"
+// STACKMOB
+// #import "StackMob.h"
+
 
 @interface ADVApartmentListViewController ()
 
@@ -48,7 +50,8 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadPressed:)];
     
-    self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
+    // STACKMOB
+    // self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
 
     [self.apartmentTableView setDelegate:self];
     [self.apartmentTableView setDataSource:self];
@@ -117,7 +120,8 @@
     
     NSString *picString = [apartment valueForKey:@"photo"];
     
-    if ([SMBinaryDataConversion stringContainsURL:picString]) {
+    // STACKMOB
+    //if ([SMBinaryDataConversion stringContainsURL:picString]) {
         NSURL* imageURL = [NSURL URLWithString:picString];
         
         NSString *key = [imageURL.absoluteString MD5Hash];
@@ -143,11 +147,13 @@
                 });
             });
         }
+    /*
     } else {
         UIImage *image = [UIImage imageWithData:[SMBinaryDataConversion dataForString:picString]];
         cell.apartmentImageView.image = image;
         [self.apartmentImages setObject:image forKey:indexPath];
     }
+     */
     
     return cell;
 }
@@ -172,6 +178,8 @@
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Loading...";
     
+    // STACKMOB
+    /*
     NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:@"Apartment"];
     [self.managedObjectContext executeFetchRequest:fetch onSuccess:^(NSArray *results) {
         
@@ -182,26 +190,21 @@
         
         NSLog(@"Error: %@", [error localizedDescription]);
     }];
+     */
 }
 
 #pragma mark IB Actions
 - (IBAction)uploadPressed:(id)sender
 {
-    if([[SMClient defaultClient] isLoggedIn]){
-        
-        [self performSegueWithIdentifier:@"upload" sender:self];
-    }
-    else{
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Please Log In" message:@"You need to be logged in to upload details" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
-        [alert show];
-    }
+    [self performSegueWithIdentifier:@"upload" sender:self];
 
 }
 
 
 - (IBAction)loginLogoutPressed:(id)sender
 {
+    // STACKMOB
+    /*
     if([[SMClient defaultClient] isLoggedIn]){
     
         [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result) {
@@ -218,13 +221,14 @@
         
         [self.navigationController popViewControllerAnimated:YES];
     }
+     */
     
 }
 
 - (NSString*)getLogText
 {
-    
-    NSString* logText = [[SMClient defaultClient] isLoggedIn] ? @"Log Out" : @"Log In";
+    // STACKMOB
+    NSString* logText = @""; // [[SMClient defaultClient] isLoggedIn] ? @"Log Out" : @"Log In";
     
     return logText;
 }
