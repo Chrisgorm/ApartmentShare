@@ -187,16 +187,7 @@
 #pragma mark IB Actions
 - (IBAction)uploadPressed:(id)sender
 {
-    if([[SMClient defaultClient] isLoggedIn]){
-        
-        [self performSegueWithIdentifier:@"upload" sender:self];
-    }
-    else{
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Please Log In" message:@"You need to be logged in to upload details" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
-        [alert show];
-    }
-
+    [self performSegueWithIdentifier:@"upload" sender:self];
 }
 
 
