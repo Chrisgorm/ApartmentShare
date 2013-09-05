@@ -416,12 +416,12 @@
 		7F2EEEE216BC7BC80001A98B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DE246AC017D6781C0023C231 /* ContactOwnerView */,
 				7F2EEEE316BC7BC80001A98B /* AppartmentList */,
 				7F2EEEE616BC7BC80001A98B /* DetailView */,
 				7F2EEEE916BC7BC80001A98B /* LoginView */,
 				7F2EEEEC16BC7BC80001A98B /* RegisterView */,
 				7F2EEEF216BC7BC80001A98B /* UploadImage */,
+				DE246AC017D6781C0023C231 /* ContactOwnerView */,
 			);
 			path = Views;
 			sourceTree = "<group>";

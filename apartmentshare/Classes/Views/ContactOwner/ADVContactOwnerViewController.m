@@ -2,7 +2,7 @@
 //  ADVContactOwnerViewController.m
 //  apartmentshare
 //
-//  Created by Matt Vaznaian on 9/3/13.
+//  Created by StackMob, Inc. on 9/3/13.
 //  Copyright (c) 2013 App Design Vault. All rights reserved.
 //
 
@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "StackMob.h"
 #import "ADVTheme.h"
+#import "MBProgressHUD.h"
 
 @implementation ADVContactOwnerViewController
 
@@ -39,6 +40,10 @@
 
 - (IBAction)sendButton:(id)sender {
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Sending...";
+    
     NSString *senderEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"ContactOwnerEmailKey"];
     
     SMCustomCodeRequest *request = [[SMCustomCodeRequest alloc]
@@ -67,11 +72,12 @@
                              encoding:NSUTF8StringEncoding]];
     
     [[[SMClient defaultClient] dataStore] performCustomCodeRequest:request onSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         UIAlertView *successAlertView = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Email sent!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [successAlertView show];
      } onFailure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-         UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error sending email: %@", [[error userInfo] objectForKey:NSLocalizedDescriptionKey]] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-         [errorAlertView show];
+         [MBProgressHUD hideHUDForView:self.view animated:YES];
+         NSLog(@"Error: %@", [error localizedDescription]);
      }];
 }
 

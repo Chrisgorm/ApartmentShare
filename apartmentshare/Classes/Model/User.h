@@ -14,6 +14,8 @@
 
 @property (nonatomic, retain) NSString * username;
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSDate * lastmodate;
+@property (nonatomic, retain) NSDate * createddate;
 
 - (id)initIntoManagedObjectContext:(NSManagedObjectContext *)context;
 

@@ -2,7 +2,7 @@
 //  ADVContactOwnerViewController.h
 //  apartmentshare
 //
-//  Created by Matt Vaznaian on 9/3/13.
+//  Created by StackMob, Inc. on 9/3/13.
 //  Copyright (c) 2013 App Design Vault. All rights reserved.
 //
 

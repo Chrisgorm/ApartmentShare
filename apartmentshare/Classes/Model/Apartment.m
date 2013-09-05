@@ -2,7 +2,7 @@
 //  Apartment.m
 //  apartmentshare
 //
-//  Created by Matt Vaznaian on 3/4/13.
+//  Created by StackMob, Inc. on 3/4/13.
 //  Copyright (c) 2013 App Design Vault. All rights reserved.
 //
 
@@ -14,6 +14,7 @@
 @dynamic apartmentId;
 @dynamic apartmentType;
 @dynamic createddate;
+@dynamic lastmodate;
 @dynamic location;
 @dynamic photo;
 @dynamic price;

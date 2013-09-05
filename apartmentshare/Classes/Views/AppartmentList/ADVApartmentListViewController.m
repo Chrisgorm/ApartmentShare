@@ -26,8 +26,7 @@
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 
 
--(void)getAllApartments;
--(void)showErrorView:errorString;
+- (void)getAllApartments;
 
 @end
 
@@ -56,9 +55,11 @@
     
     self.apartmentImages = [NSMutableDictionary dictionary];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSyncDidFinishNotification:) name:@"FinishedSync" object:nil];
+    
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
@@ -68,6 +69,11 @@
         
     NSLog(@"got all apartments");
    
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FinishedSync" object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -80,6 +86,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.apartments count];
+}
+
+- (void)didReceiveSyncDidFinishNotification:(NSNotification *)notification
+{
+    [self getAllApartments];
 }
 
 
@@ -104,33 +115,39 @@
     [cell.apartmentTypeLabel setText:[apartment valueForKey:@"apartmentType"]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
+    NSString *picString = [apartment valueForKey:@"photo"];
     
-    NSURL* imageURL = [NSURL URLWithString:[apartment valueForKey:@"photo"]];
-    
-    NSString *key = [imageURL.absoluteString MD5Hash];
-    NSData *data = [FTWCache objectForKey:key];
-    if (data) {
-        UIImage *image = [UIImage imageWithData:data];
-        cell.apartmentImageView.image = image;
+    if ([SMBinaryDataConversion stringContainsURL:picString]) {
+        NSURL* imageURL = [NSURL URLWithString:picString];
         
-        [self.apartmentImages setObject:image forKey:indexPath];
-        
-    } else {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
-        dispatch_async(queue, ^{
-            NSData *data = [NSData dataWithContentsOfURL:imageURL];
-            [FTWCache setObject:data forKey:key];
+        NSString *key = [imageURL.absoluteString MD5Hash];
+        NSData *data = [FTWCache objectForKey:key];
+        if (data) {
             UIImage *image = [UIImage imageWithData:data];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                ApartmentCell* c = (ApartmentCell*)[tableView cellForRowAtIndexPath:indexPath];
-                c.apartmentImageView.image =image;
-                
-                [self.apartmentImages setObject:image forKey:indexPath];
+            cell.apartmentImageView.image = image;
+            
+            [self.apartmentImages setObject:image forKey:indexPath];
+            
+        } else {
+            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+            dispatch_async(queue, ^{
+                NSData *data = [NSData dataWithContentsOfURL:imageURL];
+                [FTWCache setObject:data forKey:key];
+                UIImage *image = [UIImage imageWithData:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    ApartmentCell* c = (ApartmentCell*)[tableView cellForRowAtIndexPath:indexPath];
+                    c.apartmentImageView.image = image;
+                    
+                    [self.apartmentImages setObject:image forKey:indexPath];
+                });
             });
-        });
+        }
+    } else {
+        UIImage *image = [UIImage imageWithData:[SMBinaryDataConversion dataForString:picString]];
+        cell.apartmentImageView.image = image;
+        [self.apartmentImages setObject:image forKey:indexPath];
     }
-
     
     return cell;
 }
@@ -163,10 +180,7 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     } onFailure:^(NSError *error) {
         
-        // ALERT
-        NSString *errorString = [error localizedDescription];
-        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [errorAlertView show];
+        NSLog(@"Error: %@", [error localizedDescription]);
     }];
 }
 
@@ -234,15 +248,5 @@
 
     }
 }
-
-#pragma mark Error Alert
-
-- (void)showErrorView:(NSString *)errorMsg
-{
-    
-    UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMsg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    [errorAlertView show];
-}
-
 
 @end

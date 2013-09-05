@@ -10,7 +10,7 @@
 #import "ADVTheme.h"
 #import "StackMob.h"
 
-#define PUBLIC_KEY @"YOUR_PUBLIC_KEY"
+#define PUBLIC_KEY @"f9522b1c-fc85-41f6-a6e0-82243f27f5a5"
 
 @implementation AppDelegate
 
@@ -19,8 +19,46 @@
 
     [ADVThemeManager customizeAppAppearance];
     
+    SM_CACHE_ENABLED = YES;
+    
     self.client = [[SMClient alloc] initWithAPIVersion:@"0" publicKey:PUBLIC_KEY];
     self.coreDataStore = [self.client coreDataStoreWithManagedObjectModel:self.managedObjectModel];
+    
+    [self.coreDataStore setCachePolicy:SMCachePolicyTryCacheOnly];
+    
+    __block SMCoreDataStore *blockCoreDataStore = self.coreDataStore;
+    
+    [self.client.networkMonitor setNetworkStatusChangeBlock:^(SMNetworkStatus status) {
+        if (status == SMNetworkStatusReachable) {
+            // Initiate sync
+            [blockCoreDataStore syncWithServer];
+        }
+        else {
+            // Handle offline mode
+            [blockCoreDataStore setCachePolicy:SMCachePolicyTryCacheOnly];
+        }
+    }];
+    
+    [self.coreDataStore setSyncCompletionCallback:^(NSArray *objects) {
+        NSLog(@"Sync complete.");
+        // Our syncing is complete, so change the policy to fetch from the network
+        [blockCoreDataStore setCachePolicy:SMCachePolicyTryNetworkElseCache];
+        
+        // Notify other views that they should reload their data from the network
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"FinishedSync" object:nil];
+    }];
+    
+    [self.coreDataStore setSyncCallbackForFailedInserts:^(NSArray *objects) {
+        NSLog(@"Sync Failure on Inserts");
+    }];
+
+    [self.coreDataStore setSyncCallbackForFailedUpdates:^(NSArray *objects) {
+        NSLog(@"Sync Failure on Updates");
+    }];
+    
+    [self.coreDataStore setSyncCallbackForFailedDeletes:^(NSArray *objects) {
+        NSLog(@"Sync Failure on Deletes");
+    }];
     
     return YES;
 }

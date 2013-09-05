@@ -229,8 +229,7 @@ typedef enum {
         
     } onFailure:^(NSError *error) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[self.uploadError localizedDescription] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [errorAlertView show];
+        NSLog(@"Error: %@", [error localizedDescription]);
     }];
     
 }
@@ -243,15 +242,6 @@ typedef enum {
     
     //Place the image in the imageview
     self.uploadImageView.image = img;    
-}
-
-#pragma mark Error View
-
-
-- (void)showErrorView:(NSString *)errorMsg
-{
-    UIAlertView *errorAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMsg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    [errorAlertView show];
 }
 
 #define kOFFSET_FOR_KEYBOARD 80.0
