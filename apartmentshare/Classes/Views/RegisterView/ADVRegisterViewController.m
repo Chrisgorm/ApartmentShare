@@ -9,11 +9,7 @@
 #import "ADVRegisterViewController.h"
 #import "AppDelegate.h"
 #import "ADVTheme.h"
-// STACKMOB
-/*
-#import "User.h"
-#import "StackMob.h"
- */
+
 
 
 @implementation ADVRegisterViewController
@@ -33,7 +29,7 @@
     id <ADVTheme> theme = [ADVThemeManager sharedTheme];
     
     
-    self.title = @"Login";
+    self.title = @"Sign Up";
     
     self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(16, 50, 294, 160) style:UITableViewStyleGrouped];
     
@@ -66,8 +62,6 @@
     [self.passwordRegisterTextField setSecureTextEntry:YES];
     [self.passwordRegisterTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     
-    // STACKMOB
-    // self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
     
     self.userRegisterTextField.delegate = self;
     self.passwordRegisterTextField.delegate = self;
@@ -123,21 +117,7 @@
 ////Sign Up Button pressed
 - (IBAction)signUpUserPressed:(id)sender
 {
-    // STACKMOB
-    /*
-    User *newUser = [[User alloc] initIntoManagedObjectContext:self.managedObjectContext];
     
-    [newUser setUsername:self.userRegisterTextField.text];
-    [newUser setEmail:self.emailRegisterTextField.text];
-    [newUser setPassword:self.passwordRegisterTextField.text];
-    
-    [self.managedObjectContext saveOnSuccess:^{
-        [self.navigationController popViewControllerAnimated:YES];
-    } onFailure:^(NSError *error) {
-        
-        NSLog(@"Error: %@", [error localizedDescription]);
-    }];
-     */
 }
 
 @end

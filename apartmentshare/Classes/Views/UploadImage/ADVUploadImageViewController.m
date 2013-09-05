@@ -34,8 +34,7 @@ typedef enum {
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Upload Apartment";
-    // STACKMOB
-    // self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
+
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(uploadTapped:)];
     
@@ -203,38 +202,7 @@ typedef enum {
 
 - (void)uploadDataToServer
 {
-    // STACKMOB
-    /*
-    Apartment *newApartment = (Apartment *)[NSEntityDescription insertNewObjectForEntityForName:@"Apartment" inManagedObjectContext:self.managedObjectContext];
     
-    [newApartment assignObjectId];
-    
-    NSData *imageData = UIImageJPEGRepresentation(self.uploadImageView.image, 0.4);
-    
-    NSString *picData = [SMBinaryDataConversion stringForBinaryData:imageData name:@"apartment.jpg" contentType:@"image/jpg"];
-    
-    NSString* apartmentType = self.apartmentTypeControl.selectedSegmentIndex == 0 ? @"House" : @"Flat";
-    
-    
-    NSNumber* price = [NSNumber numberWithFloat:[self.priceTextField.text floatValue]];
-    NSNumber* roomCount = [NSNumber numberWithFloat:self.roomsSlider.value];
-    
-    [newApartment setPhoto:picData];
-    [newApartment setLocation:self.locationTextField.text];
-    [newApartment setRoomCount:roomCount];
-    [newApartment setPrice:price];
-    [newApartment setApartmentType:apartmentType];
-    
-    [self.managedObjectContext saveOnSuccess:^{
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSLog(@"Successful upload");
-        [self.navigationController popViewControllerAnimated:YES];
-        
-    } onFailure:^(NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSLog(@"Error: %@", [error localizedDescription]);
-    }];
-     */
     
 }
 

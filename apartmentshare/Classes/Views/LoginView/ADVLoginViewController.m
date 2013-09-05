@@ -13,11 +13,6 @@
 #import "AppDelegate.h"
 #import "UserVoice.h"
 
-// STACKMOB
-/*
-#import "StackMob.h"
-#import "User.h"
- */
 
 
 @implementation ADVLoginViewController
@@ -123,34 +118,12 @@
 //Login button pressed
 - (IBAction)logInPressed:(id)sender
 {
-    // STACKMOB
-    /*
-    [[SMClient defaultClient] loginWithUsername:self.userTextField.text password:self.passwordTextField.text onSuccess:^(NSDictionary *results) {
-        
-        NSLog(@"Logged in");
-        
-        // Save email for contacting owner
-        [[NSUserDefaults standardUserDefaults] setObject:[results objectForKey:@"email"] forKey:@"ContactOwnerEmailKey"];
-        
-        [self performSegueWithIdentifier:@"list" sender:self];
-        
-    } onFailure:^(NSError *error) {
-        
-        NSLog(@"Error: %@", [error localizedDescription]);
-    }];
-     */
+   
 }
 
 - (IBAction)showHelp:(id)sender
 {
-    // STACKMOB
-    /*
-    UVConfig *config = [UVConfig configWithSite:@"YOUR_USERVOICE_URL"
-                                         andKey:@"YOUR_KEY"
-                                      andSecret:@"YOUR_SECRET"];
-    
-    [UserVoice presentUserVoiceInterfaceForParentViewController:self andConfig:config];
-     */
+   
 }
 
 @end

@@ -17,8 +17,6 @@
 #import "ADVTheme.h"
 #import "NSString+MD5.h"
 #import "MBProgressHUD.h"
-// STACKMOB
-// #import "StackMob.h"
 
 
 @interface ADVApartmentListViewController ()
@@ -49,9 +47,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self getLogText] style:UIBarButtonItemStylePlain target:self action:@selector(loginLogoutPressed:)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Upload" style:UIBarButtonItemStylePlain target:self action:@selector(uploadPressed:)];
-    
-    // STACKMOB
-    // self.managedObjectContext = [[[SMClient defaultClient] coreDataStore] contextForCurrentThread];
+
 
     [self.apartmentTableView setDelegate:self];
     [self.apartmentTableView setDataSource:self];
@@ -120,40 +116,31 @@
     
     NSString *picString = [apartment valueForKey:@"photo"];
     
-    // STACKMOB
-    //if ([SMBinaryDataConversion stringContainsURL:picString]) {
-        NSURL* imageURL = [NSURL URLWithString:picString];
-        
-        NSString *key = [imageURL.absoluteString MD5Hash];
-        NSData *data = [FTWCache objectForKey:key];
-        if (data) {
-            UIImage *image = [UIImage imageWithData:data];
-            cell.apartmentImageView.image = image;
-            
-            [self.apartmentImages setObject:image forKey:indexPath];
-            
-        } else {
-            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
-            dispatch_async(queue, ^{
-                NSData *data = [NSData dataWithContentsOfURL:imageURL];
-                [FTWCache setObject:data forKey:key];
-                UIImage *image = [UIImage imageWithData:data];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    ApartmentCell* c = (ApartmentCell*)[tableView cellForRowAtIndexPath:indexPath];
-                    c.apartmentImageView.image = image;
-                    
-                    [self.apartmentImages setObject:image forKey:indexPath];
-                });
-            });
-        }
-    /*
-    } else {
-        UIImage *image = [UIImage imageWithData:[SMBinaryDataConversion dataForString:picString]];
+    NSURL* imageURL = [NSURL URLWithString:picString];
+    
+    NSString *key = [imageURL.absoluteString MD5Hash];
+    NSData *data = [FTWCache objectForKey:key];
+    if (data) {
+        UIImage *image = [UIImage imageWithData:data];
         cell.apartmentImageView.image = image;
+        
         [self.apartmentImages setObject:image forKey:indexPath];
+        
+    } else {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+        dispatch_async(queue, ^{
+            NSData *data = [NSData dataWithContentsOfURL:imageURL];
+            [FTWCache setObject:data forKey:key];
+            UIImage *image = [UIImage imageWithData:data];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                ApartmentCell* c = (ApartmentCell*)[tableView cellForRowAtIndexPath:indexPath];
+                c.apartmentImageView.image = image;
+                
+                [self.apartmentImages setObject:image forKey:indexPath];
+            });
+        });
     }
-     */
     
     return cell;
 }
@@ -178,19 +165,7 @@
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Loading...";
     
-    // STACKMOB
-    /*
-    NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:@"Apartment"];
-    [self.managedObjectContext executeFetchRequest:fetch onSuccess:^(NSArray *results) {
-        
-        self.apartments = results;
-        [self.apartmentTableView reloadData];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    } onFailure:^(NSError *error) {
-        
-        NSLog(@"Error: %@", [error localizedDescription]);
-    }];
-     */
+    
 }
 
 #pragma mark IB Actions
@@ -203,32 +178,13 @@
 
 - (IBAction)loginLogoutPressed:(id)sender
 {
-    // STACKMOB
-    /*
-    if([[SMClient defaultClient] isLoggedIn]){
     
-        [[SMClient defaultClient] logoutOnSuccess:^(NSDictionary *result) {
-            NSLog(@"Success, you are logged out");
-            
-            self.navigationItem.leftBarButtonItem.title = [self getLogText];
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        } onFailure:^(NSError *error) {
-            NSLog(@"Logout Fail: %@",error);
-        }];
-    }
-    else{
-        
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-     */
     
 }
 
 - (NSString*)getLogText
 {
-    // STACKMOB
-    NSString* logText = @""; // [[SMClient defaultClient] isLoggedIn] ? @"Log Out" : @"Log In";
+    NSString* logText = @"";
     
     return logText;
 }

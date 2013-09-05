@@ -10,8 +10,6 @@
 
 @interface ADVRegisterViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
-// STACKMOB
-// @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) UITextField *userRegisterTextField;
 
