@@ -10,8 +10,6 @@
 
 @interface ADVUploadImageViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 @property (nonatomic, weak) IBOutlet UIImageView *uploadImageView;
 
 @property (nonatomic, weak) IBOutlet UIView *imageContainer;

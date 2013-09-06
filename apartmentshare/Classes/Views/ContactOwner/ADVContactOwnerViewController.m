@@ -44,41 +44,10 @@
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = @"Sending...";
     
-    NSString *senderEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"ContactOwnerEmailKey"];
+   
     
-    SMCustomCodeRequest *request = [[SMCustomCodeRequest alloc]
-                                    initPostRequestWithMethod:(NSString *)@"sendgrid/email"
-                                    body:(NSString *) nil];
     
-    NSArray *usernames = [[NSArray alloc]
-                          initWithObjects:self.apartmentOwner, nil];
     
-    //convert object to data
-    NSDictionary *dic = [[NSDictionary alloc]
-                         initWithObjectsAndKeys:
-                         usernames, @"usernames",
-                         @"Inquiry On Apartment", @"subject",
-                         self.message.text, @"html",
-                         senderEmail, @"from",
-                         nil];
-    
-    NSError* error = nil;
-    NSData* jsonData = [NSJSONSerialization
-                        dataWithJSONObject:dic
-                        options:0 error:&error];
-    
-    [request setRequestBody:[[NSString alloc]
-                             initWithData:jsonData
-                             encoding:NSUTF8StringEncoding]];
-    
-    [[[SMClient defaultClient] dataStore] performCustomCodeRequest:request onSuccess:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *successAlertView = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Email sent!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [successAlertView show];
-     } onFailure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-         [MBProgressHUD hideHUDForView:self.view animated:YES];
-         NSLog(@"Error: %@", [error localizedDescription]);
-     }];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

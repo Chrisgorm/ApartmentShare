@@ -18,14 +18,15 @@
 {
 
     [ADVThemeManager customizeAppAppearance];
-    
+
     // StackMob Init Code
-    /*
-    SM_CACHE_ENABLED = YES;
+    SM_CACHE_ENABLED = NO;
     
     self.client = [[SMClient alloc] initWithAPIVersion:@"0" publicKey:PUBLIC_KEY];
     self.coreDataStore = [self.client coreDataStoreWithManagedObjectModel:self.managedObjectModel];
     
+    /*  Online/Offline Sync
+
     [self.coreDataStore setCachePolicy:SMCachePolicyTryCacheOnly];
     
     __block SMCoreDataStore *blockCoreDataStore = self.coreDataStore;
